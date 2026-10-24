@@ -32,14 +32,6 @@ function ArrowIcon({ diagonal = false }) {
 }
 
 function App() {
-  const [introOpen, setIntroOpen] = useState(() => {
-    if (typeof window === 'undefined') return false
-    try {
-      return window.localStorage.getItem('sumedh-site-entered') !== 'true'
-    } catch {
-      return true
-    }
-  })
   const [menuOpen, setMenuOpen] = useState(false)
   const [autoplayAllowed, setAutoplayAllowed] = useState(() =>
     typeof window !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -55,44 +47,6 @@ function App() {
     motionPreference.addEventListener('change', updateAutoplay)
     return () => motionPreference.removeEventListener('change', updateAutoplay)
   }, [])
-
-  const enterSite = () => {
-    try {
-      window.localStorage.setItem('sumedh-site-entered', 'true')
-    } catch {
-      // The welcome screen can still be dismissed when storage is unavailable.
-    }
-    setIntroOpen(false)
-  }
-
-  if (introOpen) {
-    return (
-      <section className="welcome-screen" aria-label="Welcome to Sumedh Sood's website">
-        <div className="welcome-copy">
-          <a className="wordmark welcome-wordmark" href="#welcome" aria-label="Sumedh Sood">
-            <span className="wordmark-mark">S</span>
-            <span className="wordmark-name">SUMEDH SOOD<span>FITNESS &amp; PERFORMANCE</span></span>
-          </a>
-          <div className="welcome-message" id="welcome">
-            <p className="eyebrow"><span className="eyebrow-line" /> A LITTLE SOMETHING FOR YOU</p>
-            <h1>For you,<br /><span>Sumedh.</span></h1>
-            <p className="welcome-note">This website is a gift from your brother, Umesh. Your fitness journey inspires me, and I made this page to celebrate your hard work.</p>
-            <p className="welcome-signoff">With love, <span>Umesh</span></p>
-            <button className="button button-lime welcome-enter" type="button" onClick={enterSite}>
-              Enter Sumedh's website <ArrowIcon />
-            </button>
-          </div>
-          <span className="welcome-footnote">MADE FOR THE JOURNEY AHEAD <span>✳</span></span>
-        </div>
-        <div className="welcome-visual">
-          <img src={photos.hero} alt="Sumedh at the gym" />
-          <div className="welcome-image-shade" />
-          <span className="welcome-image-label">SUMEDH SOOD <span>/ 01</span></span>
-          <span className="welcome-image-mark" aria-hidden="true">S</span>
-        </div>
-      </section>
-    )
-  }
 
   return (
     <main>
